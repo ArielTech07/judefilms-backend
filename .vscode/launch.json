@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-BackendSpringbootJudefilmsApplication<backend-springboot-judefilms>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.ariel.backendspring.backend_springboot_judefilms.BackendSpringbootJudefilmsApplication",
+            "projectName": "backend-springboot-judefilms",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

@@ -1,24 +1,22 @@
-# Etapa 1: Compilar la aplicación con Maven
-FROM maven:3.9.6-eclipse-temurin-17 AS build
+# Etapa 1: Compilación
+FROM eclipse-temurin:17-jdk-alpine AS build
 WORKDIR /app
 
-# Copiar el archivo de configuración y dependencias
-COPY pom.xml .
-RUN mvn dependency:go-offline -B
+# Copiar configuración de Maven Wrapper y dependencias
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN chmod +x mvnw
+RUN ./mvnw dependency:go-offline -B
 
-# Copiar el código fuente y compilar el JAR
+# Copiar el código fuente y compilar
 COPY src ./src
-RUN mvn clean package -DskipTests
+RUN ./mvnw package -DskipTests
 
-# Etapa 2: Imagen ligera de ejecución
-FROM eclipse-temurin:17-jre-jammy
+# Etapa 2: Imagen final de ejecución
+FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
-# Copiar el JAR generado desde la etapa de compilación
 COPY --from=build /app/target/*.jar app.jar
 
-# Exponer el puerto por defecto
 EXPOSE 8080
-
-# Comando para ejecutar la aplicación
 ENTRYPOINT ["java", "-jar", "app.jar"]
