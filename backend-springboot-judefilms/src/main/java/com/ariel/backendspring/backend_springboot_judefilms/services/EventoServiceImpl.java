@@ -9,13 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ariel.backendspring.backend_springboot_judefilms.entities.Evento;
 import com.ariel.backendspring.backend_springboot_judefilms.repositories.EventoRepository;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
-@RequiredArgsConstructor
 public class EventoServiceImpl implements EventoService {
 
     private final EventoRepository eventoRepository;
+
+    public EventoServiceImpl(EventoRepository eventoRepository) {
+        this.eventoRepository = eventoRepository;
+    }
 
     @Override
     @Transactional(readOnly = true)

@@ -61,5 +61,38 @@ public class R2StorageService {
 
         return publicUrl + "/" + key;
     }
+
+    public static record R2UploadResult(String url, String key) {}
+
+    public R2UploadResult uploadImage(MultipartFile file) throws IOException {
+        String originalName = file.getOriginalFilename();
+        String safeName = (originalName != null)
+                ? originalName.trim().replaceAll("\\s+", "_").replaceAll("[^a-zA-Z0-9._-]", "")
+                : "imagen.jpg";
+        if (safeName.isBlank()) {
+            safeName = "imagen.jpg";
+        }
+
+        String key = "galeria/" + UUID.randomUUID() + "_" + safeName;
+
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentLength(file.getSize());
+
+        String contentType = file.getContentType();
+        if (contentType == null || contentType.isBlank() || contentType.contains(",")) {
+            contentType = "image/jpeg";
+        }
+        metadata.setContentType(contentType);
+
+        s3Client.putObject(new PutObjectRequest(
+                bucketName, key, file.getInputStream(), metadata));
+
+        String url = publicUrl + "/" + key;
+        return new R2UploadResult(url, key);
+    }
+
+    public void deleteFile(String key){
+        s3Client.deleteObject(bucketName,key);
+    }
 }
 

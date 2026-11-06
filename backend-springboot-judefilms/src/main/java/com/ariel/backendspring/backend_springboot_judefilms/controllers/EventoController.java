@@ -16,20 +16,21 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ariel.backendspring.backend_springboot_judefilms.entities.Evento;
 import com.ariel.backendspring.backend_springboot_judefilms.services.EventoService;
 
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/eventos")
-@RequiredArgsConstructor
 public class EventoController {
 
     private final EventoService service;
+
+    public EventoController(EventoService service) {
+        this.service = service;
+    }
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")

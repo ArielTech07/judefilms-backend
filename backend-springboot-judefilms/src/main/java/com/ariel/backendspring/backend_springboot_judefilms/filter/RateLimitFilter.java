@@ -17,8 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class RateLimitFilter extends OncePerRequestFilter {
 
-    private final Map<String, Bucket> buckets =
-            new ConcurrentHashMap<>();
+    private final Map<String, Bucket> buckets = new ConcurrentHashMap<>();
 
     private Bucket createBucket(boolean login) {
         int requests = login ? 5 : 100;
@@ -36,18 +35,17 @@ public class RateLimitFilter extends OncePerRequestFilter {
     private Bucket resolveBucket(String key, boolean login) {
         return buckets.computeIfAbsent(
                 key,
-                ignored -> createBucket(login)
-        );
+                ignored -> createBucket(login));
     }
 
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
-            FilterChain filterChain
-    ) throws ServletException, IOException {
+            FilterChain filterChain) throws ServletException, IOException {
 
-        // Dejar pasar las peticiones preflight OPTIONS del navegador sin contarlas en el rate limit
+        // Dejar pasar las peticiones preflight OPTIONS del navegador sin contarlas en
+        // el rate limit
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             filterChain.doFilter(request, response);
             return;
@@ -55,8 +53,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
 
         String path = request.getServletPath();
 
-        boolean login =
-                "POST".equalsIgnoreCase(request.getMethod())
+        boolean login = "POST".equalsIgnoreCase(request.getMethod())
                 && "/api/users/login".equals(path);
 
         String ip = request.getRemoteAddr();
@@ -73,8 +70,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
             response.setHeader("Retry-After", "60");
 
             response.getWriter().write(
-                    "{\"message\":\"Demasiadas solicitudes. Intenta más tarde.\"}"
-            );
+                    "{\"message\":\"Demasiadas solicitudes. Intenta más tarde.\"}");
         }
     }
 }

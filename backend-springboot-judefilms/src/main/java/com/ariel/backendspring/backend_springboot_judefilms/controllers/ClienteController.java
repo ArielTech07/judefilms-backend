@@ -16,16 +16,20 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ariel.backendspring.backend_springboot_judefilms.entities.Cliente;
 import com.ariel.backendspring.backend_springboot_judefilms.services.ClienteService;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-
-import java.util.*;
-
 @RestController
 @RequestMapping("/api/clientes")
-@RequiredArgsConstructor
 public class ClienteController {
     private final ClienteService service;
+
+    public ClienteController(ClienteService service) {
+        this.service = service;
+    }
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")

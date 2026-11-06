@@ -8,12 +8,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ariel.backendspring.backend_springboot_judefilms.entities.Cliente;
 import com.ariel.backendspring.backend_springboot_judefilms.repositories.ClienteRepository;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
-@RequiredArgsConstructor
 public class ClienteServiceImpl implements ClienteService {
     private final ClienteRepository clienteRepository;
+
+    public ClienteServiceImpl(ClienteRepository clienteRepository) {
+        this.clienteRepository = clienteRepository;
+    }
 
     @Override
     @Transactional(readOnly = true)

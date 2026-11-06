@@ -9,13 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ariel.backendspring.backend_springboot_judefilms.entities.Contrato;
 import com.ariel.backendspring.backend_springboot_judefilms.repositories.ContratoRepository;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
-@RequiredArgsConstructor
 public class ContratoServiceImpl implements ContratoService {
 
     private final ContratoRepository contratoRepository;
+
+    public ContratoServiceImpl(ContratoRepository contratoRepository) {
+        this.contratoRepository = contratoRepository;
+    }
 
     @Override
     @Transactional(readOnly = true)

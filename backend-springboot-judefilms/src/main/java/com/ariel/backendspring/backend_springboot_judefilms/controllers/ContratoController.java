@@ -16,20 +16,21 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ariel.backendspring.backend_springboot_judefilms.entities.Contrato;
 import com.ariel.backendspring.backend_springboot_judefilms.services.ContratoService;
 
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/contratos")
-@RequiredArgsConstructor
 public class ContratoController {
 
     private final ContratoService service;
+
+    public ContratoController(ContratoService service) {
+        this.service = service;
+    }
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
